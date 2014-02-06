@@ -1,3 +1,4 @@
+// The Dijkstra and BiDirection Algorithm is implemented by minHeap data structure
 #include <iostream>
 #include <vector>
 #include <list>
@@ -98,6 +99,7 @@ public:
 	shortestD =  shortDistance[t];
 	return;
       }
+
       // update the minimum distance of the successor node    
       for(auto iter = adjList[nodeId].begin(); iter != adjList[nodeId].end(); ++iter){
 	if(shortDistance[iter->vertex]  > shortDistance[nodeId] + getDistance(nodeId, iter->vertex)){
@@ -191,7 +193,6 @@ public:
 	  stop = 1;
 	}
       }
-
       if(stop == 1) break;
     }
     
@@ -205,6 +206,7 @@ public:
       }
     }
 
+    // save the shortest distance
     shortestD = min;
     return ;
   }

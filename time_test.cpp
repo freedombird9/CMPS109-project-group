@@ -1,3 +1,5 @@
+// 100 graphs with 1000 nodes have been tested
+// the distance of the graph is randomly chosen from 1 to 200
 #include <iostream>
 #include <vector>
 #include <list>
@@ -126,11 +128,11 @@ public:
     int forwardId, backId;
 
     // vectors to store the shortest distance and the visiting status of each node in forward direction
-    vector<int>  forwardDistance(size, numeric_limits<int>::max());
+    vector<int>  forwardDistance(size, numeric_limits<int>::max()/2);
     vector<bool> forwardVisited(size, false);
 
     // vectors to store the shortest distance and the visiting status of each node in backward direction
-    vector<int>  backDistance(size,numeric_limits<int>::max());
+    vector<int>  backDistance(size,numeric_limits<int>::max()/2);
     vector<bool> backVisited(size, false);
 
     // initialize the forward direction
@@ -191,7 +193,6 @@ public:
 	  stop = 1;
 	}
       }
-
       if(stop == 1) break;
     }
     
@@ -222,7 +223,7 @@ private:
   };
  
   // To use STL priority_queue as minHeap 
-  // comparator should be redefined since STL priority_queue in STL is maxHeap
+  // comparator should be redefined since STL priority_queue in default is maxHeap
   struct comparator{
    bool operator() ( Node i, Node j){
      if(i.distance < j.distance)
@@ -258,9 +259,9 @@ int main(){
   int source, target;
   double density = 0.1;
 
+  // using procesor time to record the running time
   // the variable to record the running time
   clock_t t;
-
  
   // The mean time for Dijkstra
   double mean1 = 0;
