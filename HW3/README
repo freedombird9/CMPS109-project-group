@@ -1,0 +1,54 @@
+Homework 3
+Name: Yongfeng Zhang, Jia Xu
+CMPS109 2014 Winter
+
+About the work:
+
+There are two main programs in this assignment: Dijkstra_bidirect.cpp and time_test.cpp. We implemented the original Dijkstra's algorithm
+and the enhanced bidirectional version of it in the file Dijkstra_bidirect.cpp.
+
+We wrote two classes, one is class graph and the other is class Node, which nested in graph (a private member). For efficiency considerations,
+we used the adjacenct list representation of the graph. The adjacency list is a vector of lists of nodes. The Node class has two fields,
+vertex and distance. The vertex denotes its id, and in list i, a node's distance represents the weight between this node and node i. We used
+vector shortDistance to hold the shortest distances from source to all the other nodes. And we used vector VisitedNode to denote whether a
+node is visited or not. Finally, we built a minimum priority heap to hold the unvisited nodes. Since there's only maximum heap in the C++
+standard library, we passed a functor to the data type priority_queue to change it to a minimum heap.
+
+The above are all the data structures we used to implement the traditional Dijkstra's algorithm. For the bidirectional version, we just
+used one for the forward direction, and built another for the backward direction.
+
+The implementation of the oringinal Dijkstra's algorithm is pretty straightforward, which just visits each node, updates its neighbors'
+distances to the source node, chooses the shortest one, and repeat, until we reach the target node.
+
+The bidirectional version is similar, we just let the forward search and the backward search take turns to run, and whenever there's an
+intersection between their visited nodes, we stop the algorithm and do a linear-time search to get the final shortest path.
+
+In Dijkstra_bidirect, the user is going to input the size of the graph, the weight's lower bound and upper bound, the density and the source
+and target nodes. Then it will run the oringinal Dijkstra's algorithm, outputs the shortest distance between the selected source and target
+node. After this, it runs the bidirectional version and also ouputs the shortest distance. We can see that their results are the same.
+
+We then wrote a test program in time_test.cpp to compare the two algorithm's time complexity. The test is conducted as required in the 
+CrowdGrader. The results are as follows:
+
+First try:
+For density = 0.1                                  
+average time for Dijkstra:        8.54
+average time for bidirectional:   1.64
+For density = 0.01
+average time for Dijkstra:        2.8
+average time for bidirectional:   1.5
+
+Second try:
+For density = 0.1
+average time for Dijkstra:        8.53
+average time for bidirectional:   1.6
+For density = 0.01
+average time for Dijkstra:        2.7
+average time for bidirectional:   1.7
+
+As we can see, for density 0.1 (about 100 connected nodes), the bidirectional version is about 5 times faster than the original one. For the
+density of 0.01, however, the difference is not that big, since there're only about 10 connected nodes.
+
+Compile Instructions:
+
+You can just cd to these files' directory and type make. Then you'll get two executables: Dijkstra_bidirect and time_test.
