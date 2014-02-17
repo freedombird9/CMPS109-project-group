@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <queue>
 
 using namespace std;
 const int SIZE = 11;
@@ -41,15 +42,16 @@ public:
   
   Hex(void);
   void setBoard();
-  
+  void judge();  
   
 private:
-  
+  vector<bool> visitorInfo;
   vector<Color> color;
   vector<list<int> > adjList;
 };
 
 Hex::Hex(){
+        visitorInfo.resize(SIZE*SIZE);
 	adjList.resize(SIZE*SIZE);
 	color.resize(SIZE*SIZE, Color::Empty);
 	for (int i = 0; i != SIZE*SIZE; ++i){
@@ -114,10 +116,42 @@ void Hex::setBoard(){
 	shuffle(color.begin(), color.end(), default_random_engine(seed));	
 }
 
+void Hex::judge(){
+  int v;
+  queue<int> Q;
+  visitorInfo[0] = true;
+ 
+  // start from node 0
+  Q.push( 0 );
+  while(!Q.empty()){
+    v = Q.front();
+    Q.pop();
+    visitorInfo[v] = true;
+    for( auto w : adjList[v]){
+      if( visitorInfo[w] == false && color[w] == color[0]){
+	visitorInfo[w] = true;  //use "VISITING" to identify "candidates" for visits
+
+	if((w  > SIZE*(SIZE-1) && w < SIZE*SIZE -1) || (w % 10 == 0))  {
+	    if(color[0] == Color::Black)
+	      cout << "Black group wins!" << endl;
+	    else
+	      cout << "White group wins!" << endl;
+	    return;
+	  }
+	  Q.push(w);
+      }
+    }
+  }
+  if(color[0] == Color::Black)
+    cout << "White group wins!" << endl;
+  else
+    cout << "Black group wins!" << endl;
+}
 
 int main(){
 	Hex board;
 	board.setBoard();
 	cout << board << endl;
+	board.judge();
 	return 0;
 }
