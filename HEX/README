@@ -1,0 +1,21 @@
+Homework 1
+Name: Yongfeng Zhang
+CMPS 109, 2014 Winter
+
+About the work:
+
+Transformed the source C code into the equivalent C++ code. In order to get the standard C++, I first replaced all the old C libraries
+with standard C++ liraries. The mirror is like: <stdio.h> --> <iostream>, <math.h> --> <cmath>, <stdlib.h> --> <cstdlib>. Then the maros
+are changed into either inline functions or constant (const) variable definitions.
+
+In function mcint, all the C expressions are the same as standard C++ expressions, for there's no I/O, container or class involved. So no
+change is made.
+
+In main function, all the I/Os are changed into cout or cin, array is replaced by a vector, which is a standard C++ contrainer type. Then
+the iterator type is used to replace the old C way of accessing and operating the vector. Note that in C++ 2011, we have auto iterator
+type, thus we no longer need to specify the type of the iterator, e.g vector<double>::iterator i;. Vector member functions begin() and 
+end() are also used to denote the beginning and end of the vector, which is a standard way in C++.
+
+New things learned:
+
+The auto iterator type is definitly what I don't know before. It gives some convenience as we don't need to care about its actual type.
