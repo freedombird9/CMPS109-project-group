@@ -1,21 +1,26 @@
-Homework 1
-Name: Yongfeng Zhang
-CMPS 109, 2014 Winter
+Homework 4
+Name: Yongfeng Zhang, Jia Xu
+CMPS109 2014 Winter
 
 About the work:
 
-Transformed the source C code into the equivalent C++ code. In order to get the standard C++, I first replaced all the old C libraries
-with standard C++ liraries. The mirror is like: <stdio.h> --> <iostream>, <math.h> --> <cmath>, <stdlib.h> --> <cstdlib>. Then the maros
-are changed into either inline functions or constant (const) variable definitions.
+The objective of this homework is to implement a hex game board, and fill it with moves (half white, half black). Printing the game board is
+pretty straightforward once we are given the size of the board, we don't even need to build any data structure. As usual, we overloaded the
+<< operator to do the printing of the board. There is a little bit of math in calculating how many white spaces should be put in front of each
+line of the game board, because the board is a parallelogram.
 
-In function mcint, all the C expressions are the same as standard C++ expressions, for there's no I/O, container or class involved. So no
-change is made.
+To tell the winner, however, we need to do a Breadth-first search on each of the nodes in the left side and in the upper side. Therefore, we
+need to know the connectivity of the graph. We used an adjacency list to do it. As discussed in class, there are many corner cases concerning
+the number of degrees each node has. We used if-else conditions to treat them separately.
 
-In main function, all the I/Os are changed into cout or cin, array is replaced by a vector, which is a standard C++ contrainer type. Then
-the iterator type is used to replace the old C way of accessing and operating the vector. Note that in C++ 2011, we have auto iterator
-type, thus we no longer need to specify the type of the iterator, e.g vector<double>::iterator i;. Vector member functions begin() and 
-end() are also used to denote the beginning and end of the vector, which is a standard way in C++.
+After establishing the adjacency list, we wrote a function setBoard() to fill the board with white and black moves. Note that all the container
+data structures we used are one dimensional (except for the adjacency list) for simplicity, though the graph and board are two-dimensional.
 
-New things learned:
+Finally, in function wins(), we are to find out who has a path either from the upper side to the bottom side or from the left side to the right
+side. Note that there is a slight difference here from a real game, in which one color starts from left, and the other starts from the top.
+While here, we just put whites and blacks randomly on the board. So whenever there is a valid path starting from node i, we look up its color,
+if it's white, then the white side wins, otherwise, the black side wins.
 
-The auto iterator type is definitly what I don't know before. It gives some convenience as we don't need to care about its actual type.
+We also printed out the indices of the beginning and the end nodes of the valid path.
+
+You can just run make in the top directory to compile the source code. And then input hex to run the program.
