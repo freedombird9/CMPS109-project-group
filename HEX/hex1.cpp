@@ -113,17 +113,33 @@ public:
   Hex(void);
   void setBoard ();
   bool wins ();  
-  int coordinToIndex (int x, int y);
-  void move (int loc);
+  void move (int x, int y, Color c);
 private:
   bool upjudge (int node);
   bool leftjudge (int node);
   void indexToCoordin (int index);
+  int coordinToIndex (int x, int y);
 
   vector<bool> visitorInfo;
   vector<Color> color;
   vector<list<int> > adjList;
 };
+
+int coordinToIndex(int x, int y){
+  return ((x-1) * SIZE + y -1);
+}
+
+void Hex::move (int x, int y, Color c){
+
+  int loc = coordinToIndex(x, y);
+  if (c == Color::White){
+    color[loc] = Color::White;
+  }
+  else if (c == Color::Black)
+    color[loc] = Color::Black;
+
+  return;
+}
 
 void Hex::indexToCoordin (int index){
   int col, row;
@@ -203,10 +219,7 @@ Hex::Hex(){
 }
 
 void Hex::setBoard(){
-	fill_n(color.begin(), (SIZE*SIZE), Color::White);
-	fill_n(color.begin(), (SIZE*SIZE)/2 +1,Color::Black);
-	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-	shuffle(color.begin(), color.end(), default_random_engine(seed));	
+	fill_n(color.begin(), (SIZE*SIZE), Color::Empty);	
 }
 
 bool Hex::upjudge(int node){
@@ -289,33 +302,44 @@ bool Hex::leftjudge(int node){
 }
 
 bool Hex::wins(){
-  for (int i = 0; i!= SIZE*SIZE-1;++i){
-    if (i >=0 && i <= SIZE-1){        // if the node is in the upper side, assume white should connect upper side and bottom side
-      visitorInfo.resize(SIZE*SIZE, 0);
-      if(color[i] == Color::White && upjudge(i)){
-	cout << "White node";
-	indexToCoordin(i);
-	cout << "reached" << endl;
-	return true;	
-      }
+ 
+  for (int i = 0; i != SIZE; ++i){        // if the node is in the upper side, assume white should connect upper side and bottom side
+    visitorInfo.resize(SIZE*SIZE, 0);
+    if(color[i] == Color::White && upjudge(i)){
+      cout << "White node";
+      indexToCoordin(i);
+      cout << "reached" << endl;
+      return true;	
     }
-    if (i % SIZE == 0){    // if the node is in the left side
-      visitorInfo.resize(SIZE*SIZE, 0);
+  }
+  for (int i = 0; i <= SIZE*(SIZE - 1); i += SIZE){    // if the node is in the left side
+    visitorInfo.resize(SIZE*SIZE, 0);
       if(color[i] == Color::Black && leftjudge(i)){
 	cout << "Black node";
 	indexToCoordin(i);
-	cout << "reached" << endl;
+	cout << " reached" << endl;
 	return true;
       }
-    }
   }
   return false;
 }
 
 int main(){
-  Hex board;
-  board.setBoard();
-  cout << board << endl;
-  board.wins();
+  Hex game;
+  int x, y;
+  game.setBoard();
+  
+  cout << game << endl;
+  while (!game.wins()){
+
+    cout << "White side plays: please input the location" << endl;
+    cin >> x >> y;
+    game.move(x, y, Color::White);   // white moves first
+    cout << game << endl;
+    cout << "Black side plays: please input the location" << endl;
+    cin >> x >> y;
+    game.move(x, y, Color::Black);  // then black moves
+    cout << game <<endl;
+  }
   return 0;
 }
