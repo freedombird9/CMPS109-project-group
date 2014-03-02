@@ -61,7 +61,7 @@ bool Socket::bind ()
 
   // find out Kernel assigned PORT number and show it
   int length = sizeof(name_addr);
-  int r = ::getsockname(m_sock, (sockaddr *)(&name_addr), &length);
+  int r = ::getsockname(m_sock, (sockaddr *)&name_addr,(socklen_t *)&length);
 
   if(r < 0)
     {
@@ -69,7 +69,7 @@ bool Socket::bind ()
       return false;
     } 
   
-  int port = ntohs(name_add.sin_port);
+  int port = ntohs(name_addr.sin_port);
   std::cout << "  Port = " << port << "\n";
   return true;
 }
@@ -93,6 +93,8 @@ bool Socket::accept ( Socket& new_socket ) const
 {
   std::cout << "Server: accepting new connections ... " << "\n";
   int addr_length = sizeof ( m_addr );
+
+  // now m_addr stores the client information
   new_socket.m_sock = ::accept ( m_sock, (sockaddr *) (&m_addr), (socklen_t*) &addr_length );
 
   if ( new_socket.m_sock <= 0 )
@@ -100,7 +102,7 @@ bool Socket::accept ( Socket& new_socket ) const
  
     std::cout <<  "Server: accepted a client connection from\n";
     std::cout << "-----------------------------------------------\n";
-    std::cout << "       IP = " << inet_ntoa(new_socket.m_addr.sin_addr.s_addr) << " port = " << ntohs(new_socket.m_addr.sin_port)) << "\n";
+    std::cout << " IP = " << inet_ntoa(m_addr.sin_addr) << " port = " << ntohs(m_addr.sin_port) << "\n";
     std::cout << "-----------------------------------------------\n";
     return true;
 }
