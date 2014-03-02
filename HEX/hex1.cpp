@@ -382,7 +382,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black sid
 		}
       } // White move ends
       if (wins()){
-		scores[move]--;  // this move loses one score
+		//   	scores[move]--;  // this move loses one score
 		color = backup;
 		break;
       }
@@ -427,8 +427,8 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black sid
   
   for (int i = 0; i != SIZE*SIZE; ++i){
 	if (times[i] != 0)
-	  if ( scores[i]/times[i] > max){   // search for the optimal move
-		max = scores[i]/times[i];
+	  if ( static_cast<double>(scores[i])/static_cast<double>(times[i]) > max){   // search for the optimal move
+		max = static_cast<double>(scores[i])/static_cast<double>(times[i]);
 		move = i;
 	  }
   }
