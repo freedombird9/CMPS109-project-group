@@ -25,7 +25,7 @@ class Socket
 
   // Server behaviors for sockets
   bool create();
-  bool bind ( const int port );
+  bool bind ();
   bool listen() const;
   bool accept ( Socket& ) const;
 
@@ -35,7 +35,6 @@ class Socket
   // Data Transimission
   bool send ( const std::string ) const;
   int recv ( std::string& ) const;
-
 
   void set_non_blocking ( const bool );
 
@@ -47,6 +46,8 @@ class Socket
   int m_sock;
   sockaddr_in m_addr;
 
+  // name_addr will help identify the port number of socket
+  sockaddr_in name_addr;
 
 };
 

@@ -1,12 +1,10 @@
 // Implementation of the Socket class.
-
 #include "Socket.h"
 #include <cstring>
 #include <cerrno>
 #include <fcntl.h>
 
 // Base class Socket 
-
 Socket::Socket() :
   m_sock ( -1 )
 {
@@ -14,9 +12,9 @@ Socket::Socket() :
   memset ( &m_addr,
 	   0,
 	   sizeof ( m_addr ) );
-
 }
 
+// destructor to call global function close
 Socket::~Socket()
 {
   if ( is_valid() )
@@ -26,7 +24,7 @@ Socket::~Socket()
 // The creation of socket
 bool Socket::create()
 {
-  cout << "creat a socket" << endl;
+  std::cout << "Creat a socket\n"; 
   m_sock = socket ( AF_INET,
 		    SOCK_STREAM,
 		    0 );
@@ -38,22 +36,22 @@ bool Socket::create()
 
   // TIME_WAIT - argh
   int on = 1;
-  if ( setsockopt ( m_sock, SOL_SOCKET, SO_REUSEADDR, ( const char* ) &on, sizeof ( on ) ) == -1 )
+  if ( setsockopt ( m_sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof ( on ) ) == -1 )
     return false;
 
   return true;
 }
 
 // Associate socket id with an address
-bool Socket::bind ( const int port )
+bool Socket::bind ()
 {
-  cout << "bind socket to host info" << endl;
+  std::cout << "bind socket to host info\n"; 
   m_addr.sin_family = AF_INET;
   m_addr.sin_addr.s_addr = htonl(INADDR_ANY); // This HOST IP address
-  m_addr.sin_port = htons ( port );
+  m_addr.sin_port = 0; // let kernel assign port
 
   int bind_return = ::bind ( m_sock,
-			     ( struct sockaddr * ) &m_addr,
+			     (sockaddr *) (&m_addr),
 			     sizeof ( m_addr ) );
 
   if ( bind_return == -1 )
@@ -61,13 +59,25 @@ bool Socket::bind ( const int port )
       return false;
     }
 
+  // find out Kernel assigned PORT number and show it
+  int length = sizeof(name_addr);
+  int r = ::getsockname(m_sock, (sockaddr *)(&name_addr), &length);
+
+  if(r < 0)
+    {
+      std::cout << "fail to get socketname\n"; 
+      return false;
+    } 
+  
+  int port = ntohs(name_add.sin_port);
+  std::cout << "  Port = " << port << "\n";
   return true;
 }
 
 // Server listen to the connection requests
 bool Socket::listen() const
 {
-  cout << " Server listening ..." << endl;
+  std::cout << " Server listening ..." << "\n";
   int listen_return = ::listen ( m_sock, MAXCONNECTIONS );
 
   if ( listen_return == -1 )
@@ -81,27 +91,24 @@ bool Socket::listen() const
 // Server accepts the client requests
 bool Socket::accept ( Socket& new_socket ) const
 {
-  
-  cout << "Server: accepting new connections ... " << endl;
-
+  std::cout << "Server: accepting new connections ... " << "\n";
   int addr_length = sizeof ( m_addr );
-  new_socket.m_sock = ::accept ( m_sock, ( sockaddr * ) &m_addr, ( socklen_t * ) &addr_length );
+  new_socket.m_sock = ::accept ( m_sock, (sockaddr *) (&m_addr), (socklen_t*) &addr_length );
 
   if ( new_socket.m_sock <= 0 )
     return false;
-  else{
-    cout <<  "Server: accepted a client connection from\n";
-    cout << "-----------------------------------------------\n";
-    cout << "       IP = " << inet_ntoa(m_addr.sin_addr.s_addr) << " port = " << ntohs(m_addr.sin_port)) << endl;
-    cout << "-----------------------------------------------\n";
+ 
+    std::cout <<  "Server: accepted a client connection from\n";
+    std::cout << "-----------------------------------------------\n";
+    std::cout << "       IP = " << inet_ntoa(new_socket.m_addr.sin_addr.s_addr) << " port = " << ntohs(new_socket.m_addr.sin_port)) << "\n";
+    std::cout << "-----------------------------------------------\n";
     return true;
-  }
 }
 
 // The function to send data
 bool Socket::send ( const std::string s ) const
 {
-  cout << "Sending data ..." << endl;
+  std::cout << "Sending data ..." << "\n";
   int status = ::send ( m_sock, s.c_str(), s.size(), MSG_NOSIGNAL );
   if ( status == -1 )
     {
@@ -116,8 +123,7 @@ bool Socket::send ( const std::string s ) const
 // The function to recieve data
 int Socket::recv ( std::string& s ) const
 {
-
-  cout << "Recieving data ... " << endl; 
+  std::cout << "Recieving data ... " << "\n"; 
   char buf [ MAXRECV + 1 ];
   s = "";
   memset ( buf, 0, MAXRECV + 1 );
@@ -145,7 +151,7 @@ bool Socket::connect ( const std::string host, const int port )
 {
   if ( ! is_valid() ) return false;
 
-  cout << " Client connecting to server ... " << endl; 
+  std::cout << " Client connecting to server ... " << "\n"; 
   m_addr.sin_family = AF_INET;
   m_addr.sin_port = htons ( port );
 
@@ -153,7 +159,7 @@ bool Socket::connect ( const std::string host, const int port )
 
   if ( errno == EAFNOSUPPORT ) return false;
 
-  status = ::connect ( m_sock, ( sockaddr * ) &m_addr, sizeof ( m_addr ) );
+  status = ::connect ( m_sock, (sockaddr *) &m_addr, sizeof ( m_addr ) );
 
   if ( status == 0 )
     return true;

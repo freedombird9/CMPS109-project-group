@@ -2,6 +2,7 @@
 #include "SocketException.h"
 #include <string>
 #include <iostream>
+
 int main ( int argc, int argv[] )
 {
   std::cout << "running....\n";
@@ -9,7 +10,7 @@ int main ( int argc, int argv[] )
   try
     {
       // Create the socket
-      ServerSocket server ( 30000 );
+      ServerSocket server ( argv[1] );
 
       while ( true )
 	{
