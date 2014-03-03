@@ -6,6 +6,11 @@
 int main ( int argc, char* argv[] )
 {
   std::cout << "running....\n";
+  if(argc < 2)
+    {
+      std::cout << "Needs to input the server name\n";
+      exit(1);
+    }
 
   try
     {

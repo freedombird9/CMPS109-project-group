@@ -63,8 +63,7 @@ bool  ServerSocket::hostinfo(char *name) const
 
   if( hp == 0)
     return false;
-  std::cout << "hello!\n"; 
-  printf( "   hostname = %s",  hp->h_name);// << " IP = " <<  hp->h_addr << "\n";
+  std::cout << " hostname = " <<  hp->h_name << " IP = " <<  hp->h_addr << "\n";
 
   return true;
 }
