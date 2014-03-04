@@ -3,12 +3,16 @@
 #include <iostream>
 #include <string>
 
-int main ( int argc, int argv[] )
+int main ( int argc, char* argv[] )
 {
+
   try
     {
 
-      ClientSocket client_socket ( "localhost", 30000 );
+      std::cout << "Please insert the port number of Server\n";
+      int portNumber;
+      std::cin >> portNumber;
+      ClientSocket client_socket ( "localhost", portNumber );
 
       std::string reply;
 

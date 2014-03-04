@@ -9,7 +9,7 @@ int main ( int argc, char* argv[] )
   if(argc < 2)
     {
       std::cout << "Needs to input the server name\n";
-      exit(1);
+      return 0;
     }
 
   try

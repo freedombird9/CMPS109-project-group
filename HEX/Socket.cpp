@@ -24,7 +24,7 @@ Socket::~Socket()
 // The creation of socket
 bool Socket::create()
 {
-  std::cout << "Creat a socket\n"; 
+  std::cout << "Creat a socket ...\n"; 
   m_sock = socket ( AF_INET,
 		    SOCK_STREAM,
 		    0 );
@@ -38,14 +38,15 @@ bool Socket::create()
   int on = 1;
   if ( setsockopt ( m_sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&on, sizeof ( on ) ) == -1 )
     return false;
-
+  
+  std::cout << "\n Socket has been successfully created!\n";
   return true;
 }
 
 // Associate socket id with an address
 bool Socket::bind ()
 {
-  std::cout << "bind socket to host info\n"; 
+  std::cout << "Binding socket to host info ...\n"; 
   m_addr.sin_family = AF_INET;
   m_addr.sin_addr.s_addr = htonl(INADDR_ANY); // This HOST IP address
   m_addr.sin_port = 0; // let kernel assign port
@@ -58,7 +59,9 @@ bool Socket::bind ()
     {
       return false;
     }
-
+ 
+  std::cout << "\nNow the socket has been bounded.\n";
+  std::cout << "Retrieving info on PORT number ...\n";
   // find out Kernel assigned PORT number and show it
   int length = sizeof(name_addr);
   int r = ::getsockname(m_sock, (sockaddr *)&name_addr,(socklen_t *)&length);
@@ -70,14 +73,14 @@ bool Socket::bind ()
     } 
   
   int port = ntohs(name_addr.sin_port);
-  std::cout << "  Port = " << port << "\n";
+  std::cout << "Port = " << port << "  Succeed!\n";
   return true;
 }
 
 // Server listen to the connection requests
 bool Socket::listen() const
 {
-  std::cout << " Server listening ..." << "\n";
+  std::cout << "Server is now listening ..." << "\n";
   int listen_return = ::listen ( m_sock, MAXCONNECTIONS );
 
   if ( listen_return == -1 )
@@ -153,7 +156,7 @@ bool Socket::connect ( const std::string host, const int port )
 {
   if ( ! is_valid() ) return false;
 
-  std::cout << " Client connecting to server ... " << "\n"; 
+  std::cout << "Client connecting to server ... \n"; 
   m_addr.sin_family = AF_INET;
   m_addr.sin_port = htons ( port );
 

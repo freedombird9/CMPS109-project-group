@@ -1,7 +1,7 @@
 // Implementation of the ServerSocket class
 #include "ServerSocket.h"
 #include "SocketException.h"
-#include <stdio.h>
+
 ServerSocket::ServerSocket ( char *hostname )
 {
   std::cout << "===================== server init =======================" << "\n";
@@ -63,7 +63,7 @@ bool  ServerSocket::hostinfo(char *name) const
 
   if( hp == 0)
     return false;
-  std::cout << " hostname = " <<  hp->h_name << " IP = " <<  inet_ntoa(*(in_addr *)hp->h_addr) << "\n";
+  std::cout << "Hostname = " <<  hp->h_name << " IP = " <<  inet_ntoa(*(in_addr *)hp->h_addr) << "\n";
 
   return true;
 }
