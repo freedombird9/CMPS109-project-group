@@ -2,7 +2,7 @@
 #include "ServerSocket.h"
 #include "SocketException.h"
 
-ServerSocket::ServerSocket ( char *hostname )
+ServerSocket::ServerSocket ( const char *hostname )
 {
   std::cout << "===================== server init =======================" << "\n";
   
@@ -55,7 +55,7 @@ const ServerSocket& ServerSocket::operator >> ( std::string& s ) const
   return *this;
 }
 
-bool  ServerSocket::hostinfo(char *name) const
+bool  ServerSocket::hostinfo(const char *name) const
 {
   // get DOT name and IP address of the host
   std::cout << "Now get and show server host info" << "\n";

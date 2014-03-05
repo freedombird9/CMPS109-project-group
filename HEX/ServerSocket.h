@@ -9,7 +9,7 @@ class ServerSocket : private Socket
 {
  public:
 
-  ServerSocket (char *hostname);
+  ServerSocket (const char *hostname);
   ServerSocket (){};
   virtual ~ServerSocket();
 
@@ -17,7 +17,7 @@ class ServerSocket : private Socket
   const ServerSocket& operator >> ( std::string& ) const;
 
   // print out the host info
-  bool hostinfo(char *name) const;
+  bool hostinfo(const char *name) const;
 
   void accept ( ServerSocket& );
 

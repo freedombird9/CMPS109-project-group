@@ -7,7 +7,6 @@ int main(){
   
   cout << game << endl;
   while (true){
-
     cout << "White side plays: please input the location" << endl;
     while (true){
       cin >> x >> y;

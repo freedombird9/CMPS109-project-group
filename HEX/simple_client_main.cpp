@@ -2,29 +2,76 @@
 #include "SocketException.h"
 #include <iostream>
 #include <string>
+#include "hex.h"
 
-int main ( int argc, char* argv[] )
+using namespace std;
+
+int main ( )
 {
-
   try
     {
+      // provide the server you want to connect
+      cout << "Please input the server name" << endl;
+      string Hostname;
+      cin >> Hostname;
 
-      std::cout << "Please insert the port number of Server\n";
+      cout << "Please insert the port number of Server" << endl;
       int portNumber;
-      std::cin >> portNumber;
-      ClientSocket client_socket ( "localhost", portNumber );
-
-      std::string reply;
-
+      cin >> portNumber;
+      ClientSocket client_socket (Hostname, portNumber );
+     
+      cout << " Server has been connected, now set up the game board... " << endl;
       try
 	{
-	  client_socket << "Test message.";
-	  client_socket >> reply;
+	  // The game is now set up 
+	    Hex game;
+	    int x, y;
+	    string data;
+
+	    game.setBoard();
+	    	 
+	    cout << game << endl;
+	    
+	    cout << "Game board setup complete!" << endl;
+	    cout << "Here is the rule:\n";
+	    cout << "User will play white from left to right, computer will play black up to down.\n";
+	      
+	    while (true){
+	      cout << "Now it is your turn, pick up a location (x, y):" << endl;
+
+	      while (true){
+		cin >> x >> y;
+		if(game.move(x, y, Color::White))   // white moves first
+		  break;
+		else cout << "illegal movement, please try agagin" << endl;
+	      }
+	      
+	      // sending x , y to Server
+	      client_socket << to_string(x);
+	      client_socket << to_string(y);
+
+	      cout << game << endl;
+	      if (game.wins()) {
+		cout << "Congratulations! You (White) wins!" << endl;
+		break;
+	      }
+	      
+	      cout << "Now waiting for the computer response..." << endl;
+	      client_socket >> data;
+	      x = stoi(data);
+	      client_socket >> data;
+	      y = stoi(data);
+	      cout << "Now computer moves to x = " << x << " y = " << y << endl;
+	      game.move(x, y, Color::Black);
+	      cout << game << endl;
+	      if (game.wins()) {
+		cout << "Ohh... You lose, Computer (Black)  wins!" << endl;
+		break;
+	      }
+	    }
 	}
       catch ( SocketException& ) {}
-
-      std::cout << "We received this response from the server:\n\"" << reply << "\"\n";;
-
+      
     }
   catch ( SocketException& e )
     {
