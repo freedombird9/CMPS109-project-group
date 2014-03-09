@@ -1,13 +1,20 @@
 #include "hex.h"
 
 int main(){
-  Hex game;
-  int x, y;
-  game.setBoard();
   
-  cout << game << endl;
-  while (true){
+  int x, y;
+  int size, difficulty;
 
+  cout << "please input the board size" << endl;
+  cin >> size;
+  cout << "please input difficulty" << endl;
+  cin >> difficulty;
+  Hex game(size);
+  game.setBoard();
+
+  cout << game << endl;
+
+  while (true){
     cout << "White side plays: please input the location" << endl;
     while (true){
       cin >> x >> y;
@@ -22,7 +29,7 @@ int main(){
     }
 
     cout << "computer plays..." << endl;
-	game.AI(x, y, 20000);
+	game.AI(x, y, difficulty);
 	game.move(x, y, Color::Black);
     cout << game << endl;
     if (game.wins()) {
