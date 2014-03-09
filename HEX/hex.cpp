@@ -17,7 +17,7 @@ using namespace std;
 
 
 int Hex::coordinToIndex(int x, int y){
-  return ((x-1) * SIZE + y -1);
+  return ((x-1) * size + y -1);
 }
 
 bool Hex::move (int x, int y, Color c){
@@ -35,76 +35,76 @@ bool Hex::move (int x, int y, Color c){
 }
 
 void Hex::indexToCoordin (int index, int &row, int &col){
-  for (row = 1; row != SIZE*SIZE; ++row){
-    if (index <= SIZE - 1){
+  for (row = 1; row != size*size; ++row){
+    if (index <= size - 1){
       col = index + 1;
       return;
     }
-    else index -= SIZE;
+    else index -= size;
   }
 }
 
 
-Hex::Hex(){
-  visitorInfo.resize(SIZE*SIZE);
-  adjList.resize(SIZE*SIZE);
-  color.resize(SIZE*SIZE, Color::Empty);
-  for (int i = 0; i != SIZE*SIZE; ++i){
+Hex::Hex(int si):size(si){
+  visitorInfo.resize(size*size);
+  adjList.resize(size*size);
+  color.resize(size*size, Color::Empty);
+  for (int i = 0; i != size*size; ++i){
     
     if (i == 0) {
       adjList[i].push_back(i+1);
-      adjList[i].push_back(i+SIZE);
+      adjList[i].push_back(i+size);
     }
-    else if (i < SIZE - 1){
+    else if (i < size - 1){
       adjList[i].push_back(i+1);
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i+size-1);
     }
-    else if (i == SIZE - 1 ){
+    else if (i == size - 1 ){
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i+size-1);
     }
-    else if (i % SIZE == 0 && i != SIZE*(SIZE-1)){
-      adjList[i].push_back(i-SIZE);
-      adjList[i].push_back(i-SIZE+1);
+    else if (i % size == 0 && i != size*(size-1)){
+      adjList[i].push_back(i-size);
+      adjList[i].push_back(i-size+1);
       adjList[i].push_back(i+1);
-      adjList[i].push_back(i+SIZE);
+      adjList[i].push_back(i+size);
     }
-    else if (i == SIZE*(SIZE-1)){
-      adjList[i].push_back(i-SIZE);
-      adjList[i].push_back(i-SIZE+1);
+    else if (i == size*(size-1)){
+      adjList[i].push_back(i-size);
+      adjList[i].push_back(i-size+1);
       adjList[i].push_back(i+1);
     }
-    else if (i % SIZE == SIZE - 1  && i != SIZE*SIZE-1){
-      adjList[i].push_back(i-SIZE);
+    else if (i % size == size - 1  && i != size*size-1){
+      adjList[i].push_back(i-size);
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i+size-1);
     }
-    else if (i == SIZE*SIZE -1){
+    else if (i == size*size -1){
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i-SIZE);
+      adjList[i].push_back(i-size);
     }
-    else if (i > SIZE*(SIZE-1) && i < SIZE*SIZE -1){
+    else if (i > size*(size-1) && i < size*size -1){
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i-SIZE);
+      adjList[i].push_back(i-size);
       adjList[i].push_back(i+1);
-      adjList[i].push_back(i-SIZE+1);
+      adjList[i].push_back(i-size+1);
     }
     else {
       adjList[i].push_back(i+1);
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i-SIZE);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i-SIZE+1);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i-size);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i-size+1);
+      adjList[i].push_back(i+size-1);
     }
   }
 
 #ifdef _DEBUG_
-  for (int i = 0; i != SIZE*SIZE; ++i){   // check the correctness of the adjacency list
+  for (int i = 0; i != size*size; ++i){   // check the correctness of the adjacency list
     cout << i << " -> ";
     for ( auto elem : adjList[i])
       cout << elem << " -> ";
@@ -114,7 +114,7 @@ Hex::Hex(){
 }
 
 void Hex::setBoard(){
-  fill_n(color.begin(), (SIZE*SIZE), Color::Empty);	
+  fill_n(color.begin(), (size*size), Color::Empty);	
 }
 
 bool Hex::upjudge(int node){
@@ -152,7 +152,7 @@ bool Hex::upjudge(int node){
 #ifdef _DEBUG_
 	cout << " next visited: " << w;
 #endif
-	if((w >= SIZE*(SIZE-1) && w < SIZE*SIZE)){  // reached the bottom line
+	if((w >= size*(size-1) && w < size*size)){  // reached the bottom line
 
 #ifdef _DEBUG_
 	  cout << endl;
@@ -189,7 +189,7 @@ bool Hex::leftjudge(int node){
 #ifdef _DEBUG_
 	cout << "->" << w;
 #endif
-	if(w % SIZE == SIZE - 1 ){    // reached the right border
+	if(w % size == size - 1 ){    // reached the right border
 
 #ifdef _DEBUG_
 	  cout << endl;
@@ -205,14 +205,14 @@ bool Hex::leftjudge(int node){
 
 bool Hex::wins(){
  
-  for (int i = 0; i != SIZE; ++i){        // if the node is in the upper side, assume white should connect upper side and bottom side
-    visitorInfo.assign(SIZE*SIZE, false);
+  for (int i = 0; i != size; ++i){        // if the node is in the upper side, assume white should connect upper side and bottom side
+    visitorInfo.assign(size*size, false);
     if(color[i] == Color::White && upjudge(i)){
       return true;	
     }
   }
-  for (int i = 0; i <= SIZE*(SIZE - 1); i += SIZE){    // if the node is in the left side
-    visitorInfo.assign(SIZE*SIZE, false);
+  for (int i = 0; i <= size*(size - 1); i += size){    // if the node is in the left side
+    visitorInfo.assign(size*size, false);
     if(color[i] == Color::Black && leftjudge(i)){
       return true;
     }
@@ -226,12 +226,12 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black sid
   srand(time(NULL));
 
   vector<Color> backup(color);      // store the current board info.
-  vector<int> scores(SIZE*SIZE, 0);
-  vector<int> times(SIZE*SIZE, 0);
+  vector<int> scores(size*size, 0);
+  vector<int> times(size*size, 0);
   
   for(int i = 0; i != difficulty; ++i){
     while(true){    // loop until get an legal move
-      move = rand() % (SIZE*SIZE);
+      move = rand() % (size*size);
       if (color[move] == Color::Empty){
 		color[move] = Color::Black;
 		times[move]++;
@@ -257,7 +257,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black sid
 #endif
 
       while(true){
-		simul = rand() % (SIZE*SIZE);
+		simul = rand() % (size*size);
 
 #ifdef _DEBUGAI_
 		cout << "stuck in simul: " << simul << endl;
@@ -274,7 +274,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black sid
 		break;
       }
       while(true){
-		simul = rand() % (SIZE*SIZE);
+		simul = rand() % (size*size);
 
 #ifdef _DEBUGAI_
 		cout << "stuck in simul: " << simul << endl;
@@ -312,7 +312,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black sid
 	++i;
   }
   
-  for (int i = 0; i != SIZE*SIZE; ++i){
+  for (int i = 0; i != size*size; ++i){
 	if (times[i] != 0)
 	  if ( static_cast<double>(scores[i])/static_cast<double>(times[i]) > max){   // search for the optimal move
 		max = static_cast<double>(scores[i])/static_cast<double>(times[i]);
