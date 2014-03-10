@@ -28,7 +28,7 @@ int main ( )
 	  // The game is now set up 
 	    Hex game;
 	    int x, y;
-
+	    string data;
 	    game.setBoard();
 	    	 
 	    cout << game << endl;
@@ -54,10 +54,24 @@ int main ( )
 	    
 	    client_socket << to_string(y);
 
-	      if (game.wins()) {
-	  	cout << "Congratulations! You (White) wins!" << endl;
-		//	break;
-	      }
+	    if (game.wins()) {
+	      cout << "Congratulations! You (White) wins!" << endl;
+	      //	break;
+	    }
+	    
+	    cout << "Now waiting for the computer response..." << endl;
+
+	    client_socket >> data;
+	    x = stoi(data);
+	    client_socket >> data;
+	    y = stoi(data);
+
+	    cout << "Now computer moves to x = " << x << " y = " << y << endl;
+	    game.move(x, y, Color::Black);
+	    cout << game << endl;
+	    if (game.wins()) {
+	      cout << "Ohh... You lose, Computer (Black)  wins!" << endl;
+	    }
 	    
             #ifdef _DEBUG_ 	      
 	    while (true){

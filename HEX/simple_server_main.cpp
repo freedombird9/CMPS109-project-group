@@ -47,7 +47,19 @@ int main ( )
 	      if (game.wins()) {
 		cout << "User (White) wins!" << endl;
 	      }	      
-             
+
+	      cout << "Now computer plays..." << endl;
+	      game.AI(x, y, 20000);
+	      game.move(x, y, Color::Black);
+
+	      new_sock << to_string(x);
+	      sleep(2);
+	      new_sock << to_string(y);
+	
+	      cout << game << endl;
+	      if (game.wins()) {
+		cout << "Computer (Black) wins!" << endl;
+	      }       
                #ifdef _DEBUG_
 	      while ( true )
 		{
