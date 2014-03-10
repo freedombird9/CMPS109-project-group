@@ -37,6 +37,7 @@ int main ( )
 	    cout << "Here is the rule:\n";
 	    cout << "User will play white from left to right, computer will play black up to down.\n";
 
+	    for(int i = 0; i < 2 ; ++i){
 	    cout << "Now it is your turn, pick up a location (x, y):" << endl;
 	    
 	    while (true){
@@ -72,7 +73,7 @@ int main ( )
 	    if (game.wins()) {
 	      cout << "Ohh... You lose, Computer (Black)  wins!" << endl;
 	    }
-	    
+	    }
             #ifdef _DEBUG_ 	      
 	    while (true){
 

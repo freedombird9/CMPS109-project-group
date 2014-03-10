@@ -32,6 +32,8 @@ int main ( )
 	      game.setBoard();
 	      cout << game << endl;
 	      string data;
+
+	      for(int i = 0 ; i < 2 ; ++i){
 	      cout << "Now waiting for the user move" << endl;
 
 	      new_sock >> data;
@@ -59,7 +61,8 @@ int main ( )
 	      cout << game << endl;
 	      if (game.wins()) {
 		cout << "Computer (Black) wins!" << endl;
-	      }       
+	      }   
+	      }    
                #ifdef _DEBUG_
 	      while ( true )
 		{
