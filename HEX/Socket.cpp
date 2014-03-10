@@ -132,7 +132,7 @@ int Socket::recv ( std::string& s ) const
   char buf [ MAXRECV + 1 ];
   s = "";
   memset ( buf, 0, MAXRECV + 1 );
-
+  
   int status = ::recv ( m_sock, buf, MAXRECV, 0 );
 
   if ( status == -1 )

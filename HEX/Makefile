@@ -16,18 +16,18 @@ simple_server: $(simple_server_objects)
 simple_client: $(simple_client_objects)
 	$(CC) $(CFLAGS) -o simple_client $(simple_client_objects)
 
-hex.o: hex.cpp hex.h
-	$(CC) $(CFLAGS) -c hex.cpp hex.h
+hex.o: hex.cpp 
+	$(CC) $(CFLAGS) -c hex.cpp 
 
-Socket.o: Socket.cpp Socket.h
-	$(CC) $(CFLAGS) -c Socket.cpp Socket.h
+Socket.o: Socket.cpp 
+	$(CC) $(CFLAGS) -c Socket.cpp 
 
-ServerSocket.o: ServerSocket.h ServerSocket.cpp
-	$(CC) $(CFLAGS) -c ServerSocket.cpp ServerSocket.h
+ServerSocket.o:  ServerSocket.cpp
+	$(CC) $(CFLAGS) -c ServerSocket.cpp 
 
 
-ClientSocket.o: ClientSocket.cpp ClientSocket.h
-	$(CC) $(CFLAGS) -c ClientSocket.cpp ClientSocket.h
+ClientSocket.o: ClientSocket.cpp 
+	$(CC) $(CFLAGS) -c ClientSocket.cpp 
 
 simple_server_main.o: simple_server_main.cpp
 	$(CC) $(CFLAGS) -c simple_server_main.cpp
@@ -36,4 +36,4 @@ simple_client_main.o: simple_client_main.cpp
 	$(CC) $(CFLAGS) -c simple_client_main.cpp
 
 clean:
-	rm -f *.o *.gch simple_server simple_client
+	rm -f *.o simple_server simple_client

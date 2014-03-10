@@ -3,6 +3,8 @@
 #include "hex.h"
 #include <string>
 #include <iostream>
+//#define _DEBUG_
+
 using namespace std;
 
 
@@ -29,14 +31,38 @@ int main ( )
 	      cout << "The game has been set up\n";
 	      game.setBoard();
 	      cout << game << endl;
+	      string data;
+	      cout << "Now waiting for the user move" << endl;
+
+	      new_sock >> data;
+	      x = stoi(data);
+	
+	      new_sock >> data;
+	      y = stoi(data);
+
+	      cout << "what we recieve is "<<  x << y << endl;
+	      game.move(x,y,Color::White);
+	      cout << game << endl;
+		  
+	      if (game.wins()) {
+		cout << "User (White) wins!" << endl;
+	      }	      
+             
+               #ifdef _DEBUG_
 	      while ( true )
 		{
-		  string data;
+		 
 		  cout << "Now waiting for the user move" << endl;
 		  // recieve data from client
-		  new_sock >> data;
+		  while(data.empty()){
+		    new_sock >> data;
+		  }
 		  x = stoi(data);
-		  new_sock >> data;
+		  
+		  data.erase(data.begin(), data.end());
+		  while(data.empty()){
+		    new_sock >> data;
+		  }
 		  y = stoi(data);
 
 		  cout << "what we recieve is "<<  x << y << endl;
@@ -61,6 +87,10 @@ int main ( )
 		    break;
 		  }
 		}
+	      #endif
+
+
+
 	    }
 	  catch ( SocketException& ) {}
 
