@@ -35,9 +35,9 @@ int main ( )
 	    
 	    cout << "Game board setup complete!" << endl;
 	    cout << "Here is the rule:\n";
-	    cout << "User will play white from left to right, computer will play black up to down.\n";
+	    cout << "Computer will play white from left to right, user will play black up to down.\n";
 
-	    for(int i = 0; i < 2 ; ++i){
+	    while(true){
 	    cout << "Now it is your turn, pick up a location (x, y):" << endl;
 	    
 	    while (true){
@@ -57,7 +57,7 @@ int main ( )
 
 	    if (game.wins()) {
 	      cout << "Congratulations! You (White) wins!" << endl;
-	      //	break;
+	      break;
 	    }
 	    
 	    cout << "Now waiting for the computer response..." << endl;
@@ -72,6 +72,7 @@ int main ( )
 	    cout << game << endl;
 	    if (game.wins()) {
 	      cout << "Ohh... You lose, Computer (Black)  wins!" << endl;
+	      break;
 	    }
 	    }
             #ifdef _DEBUG_ 	      

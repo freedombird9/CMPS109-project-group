@@ -33,7 +33,7 @@ int main ( )
 	      cout << game << endl;
 	      string data;
 
-	      for(int i = 0 ; i < 2 ; ++i){
+	      while(true){
 	      cout << "Now waiting for the user move" << endl;
 
 	      new_sock >> data;
@@ -48,6 +48,7 @@ int main ( )
 		  
 	      if (game.wins()) {
 		cout << "User (White) wins!" << endl;
+		break;
 	      }	      
 
 	      cout << "Now computer plays..." << endl;
@@ -61,6 +62,7 @@ int main ( )
 	      cout << game << endl;
 	      if (game.wins()) {
 		cout << "Computer (Black) wins!" << endl;
+		break;
 	      }   
 	      }    
                #ifdef _DEBUG_
