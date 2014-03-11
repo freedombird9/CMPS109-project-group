@@ -11,6 +11,7 @@
 
 using namespace std;
 
+// overloading << 
 ostream& operator<<(ostream &out, const Hex& input){
   int m = 0;
   out << "board size:" << input.size << "*" << input.size << endl;
