@@ -8,15 +8,14 @@
 #include <vector>
 
 using namespace std;
-const int SIZE = 5;
 
 enum class Color{Black, White, Empty};
 
 class Hex {
 
 public:
-  friend ostream& operator<<(ostream &out, const Hex input);
-  Hex(void);
+  friend ostream& operator<<(ostream &out, const Hex &input);
+  Hex(int s);
   void setBoard ();
   bool wins ();  
   bool move (int x, int y, Color c);
@@ -26,7 +25,7 @@ private:
   bool leftjudge (int node);
   void indexToCoordin (int index, int &row, int &col);
   int coordinToIndex (int x, int y);
-
+  int size;
   vector<bool> visitorInfo;
   vector<Color> color;
   vector<list<int> > adjList;

@@ -11,12 +11,12 @@
 
 using namespace std;
 
-ostream& operator<<(ostream &out, const Hex input){
+ostream& operator<<(ostream &out, const Hex& input){
   int m = 0;
-  out << "board size:" << SIZE << "*" << SIZE << endl;
-  for(int i = 0; i != SIZE; ++i){
+  out << "board size:" << input.size << "*" << input.size << endl;
+  for(int i = 0; i != input.size; ++i){
     if (i == 0){
-      for (int j = 0, col = 1; j != SIZE; ++j, ++col){   // first line
+      for (int j = 0, col = 1; j != input.size; ++j, ++col){   // first line
 	if (col - 10 < 0){
 	  if (j == 0) out << "   ";      // three white-space indent of the whole game board
 	  out << " " << col << "/" << " " << "\\" << " ";   // display the column number
@@ -25,26 +25,26 @@ ostream& operator<<(ostream &out, const Hex input){
 	  if (j == 0) out << "   ";
 	  out << col << "/" << " " << "\\" << " ";
 	}
-	if ( j % SIZE == SIZE - 1 )  // end of line
+	if ( j % input.size == input.size - 1 )  // end of line
 	  out << endl;
       }
-      for (int j = 0; j != SIZE; ++j){      // second line
+      for (int j = 0; j != input.size; ++j){      // second line
 	if (j == 0) out << "   ";      // three white-space indent of the whole game board
 	out << " " << "/" << "   " << "\\";
-	if ( j % SIZE == SIZE - 1 )  // end of line
+	if ( j % input.size == input.size - 1 )  // end of line
 	  out << endl;
       }
     }  // end if (i == 0)
-    for (int j = 0; j!= SIZE; ++j){   // third line
+    for (int j = 0; j!= input.size; ++j){   // third line
       if (j == 0) out << "   ";     // three white-space indent of the whole game board
       out << "|" << "     ";	      
-      if ( j % SIZE == SIZE - 1 ){  // end of line
+      if ( j % input.size == input.size - 1 ){  // end of line
 	out << "|" << endl;
 	for (int k = 0; k != i; ++k)
 	  out << "   ";
       }
     }
-    for (int j = 0; j != SIZE; ++j){    // 4th line
+    for (int j = 0; j != input.size; ++j){    // 4th line
       if (j == 0){
 	if ((i+1) - 10 < 0)        // display the row number
 	  out << "  " << i+1;
@@ -65,17 +65,17 @@ ostream& operator<<(ostream &out, const Hex input){
 	break;
       }
       out << "  ";
-      if ( j % SIZE == SIZE - 1 ){  // end of line
+      if ( j % input.size == input.size - 1 ){  // end of line
 	out << "|" << endl;
 	for (int k = 0; k != i; ++k)
 	  out << "   ";
       }
     }
-    for (int j = 0; j != SIZE; ++j){   // 5th line
+    for (int j = 0; j != input.size; ++j){   // 5th line
       if (j == 0) out << "   ";
       out << " " << "\\" << "   " << "/";
-      if ( j % SIZE == SIZE - 1  ){  // end of line
-	if ( i == SIZE - 1){
+      if ( j % input.size == input.size - 1  ){  // end of line
+	if ( i == input.size - 1){
 	  out << endl;
 	  for (int k = 0; k != i; ++k )
 	    out << "   ";
@@ -87,11 +87,11 @@ ostream& operator<<(ostream &out, const Hex input){
 	  out << "   ";
       }
     }
-    for (int j = 0; j != SIZE; ++j){   // 6th (last) line
+    for (int j = 0; j != input.size; ++j){   // 6th (last) line
       if (j == 0) out << "   ";
       out << "  " << "\\" << " " << "/" << " ";
-      if ( j % SIZE == SIZE - 1  ){  // end of line
-	if ( i == SIZE - 1)
+      if ( j % input.size == input.size - 1  ){  // end of line
+	if ( i == input.size - 1)
 	  continue;
 	out << "  " << "\\";
 	out << endl;
@@ -123,77 +123,77 @@ bool Hex::move (int x, int y, Color c){
 }
 
 void Hex::indexToCoordin (int index, int &row, int &col){
-  for (row = 1; row != SIZE*SIZE; ++row){
-    if (index <= SIZE - 1){
+  for (row = 1; row != size*size; ++row){
+    if (index <= size - 1){
       col = index + 1;
       return;
     }
-    else index -= SIZE;
+    else index -= size;
   }
 }
 
-Hex::Hex(){
-  visitorInfo.resize(SIZE*SIZE);
-  adjList.resize(SIZE*SIZE);
-  color.resize(SIZE*SIZE, Color::Empty);
-  for (int i = 0; i != SIZE*SIZE; ++i){
+Hex::Hex(int s): size(s ){  
+  visitorInfo.resize(size*size);
+  adjList.resize(size*size);
+  color.resize(size*size, Color::Empty);
+  for (int i = 0; i != size*size; ++i){
     
     if (i == 0) {
       adjList[i].push_back(i+1);
-      adjList[i].push_back(i+SIZE);
+      adjList[i].push_back(i+size);
     }
-    else if (i < SIZE - 1){
+    else if (i < size - 1){
       adjList[i].push_back(i+1);
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i+size-1);
     }
-    else if (i == SIZE - 1 ){
+    else if (i == size - 1 ){
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i+size-1);
     }
-    else if (i % SIZE == 0 && i != SIZE*(SIZE-1)){
-      adjList[i].push_back(i-SIZE);
-      adjList[i].push_back(i-SIZE+1);
+    else if (i % size == 0 && i != size*(size-1)){
+      adjList[i].push_back(i-size);
+      adjList[i].push_back(i-size+1);
       adjList[i].push_back(i+1);
-      adjList[i].push_back(i+SIZE);
+      adjList[i].push_back(i+size);
     }
-    else if (i == SIZE*(SIZE-1)){
-      adjList[i].push_back(i-SIZE);
-      adjList[i].push_back(i-SIZE+1);
+    else if (i == size*(size-1)){
+      adjList[i].push_back(i-size);
+      adjList[i].push_back(i-size+1);
       adjList[i].push_back(i+1);
     }
-    else if (i % SIZE == SIZE - 1  && i != SIZE*SIZE-1){
-      adjList[i].push_back(i-SIZE);
+    else if (i % size == size - 1  && i != size*size-1){
+      adjList[i].push_back(i-size);
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i+size-1);
     }
-    else if (i == SIZE*SIZE -1){
+    else if (i == size*size -1){
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i-SIZE);
+      adjList[i].push_back(i-size);
     }
-    else if (i > SIZE*(SIZE-1) && i < SIZE*SIZE -1){
+    else if (i > size*(size-1) && i < size*size -1){
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i-SIZE);
+      adjList[i].push_back(i-size);
       adjList[i].push_back(i+1);
-      adjList[i].push_back(i-SIZE+1);
+      adjList[i].push_back(i-size+1);
     }
     else {
       adjList[i].push_back(i+1);
       adjList[i].push_back(i-1);
-      adjList[i].push_back(i-SIZE);
-      adjList[i].push_back(i+SIZE);
-      adjList[i].push_back(i-SIZE+1);
-      adjList[i].push_back(i+SIZE-1);
+      adjList[i].push_back(i-size);
+      adjList[i].push_back(i+size);
+      adjList[i].push_back(i-size+1);
+      adjList[i].push_back(i+size-1);
     }
   }
 
 }
 
 void Hex::setBoard(){
-  fill_n(color.begin(), (SIZE*SIZE), Color::Empty);	
+  fill_n(color.begin(), (size*size), Color::Empty);	
 }
 
 bool Hex::upjudge(int node){
@@ -213,7 +213,7 @@ bool Hex::upjudge(int node){
       if( visitorInfo[w] == false && (color[w] == color[node])){
 	visitorInfo[w] = true;  // use "VISITING" to identify "candidates" for visits
 
-	if((w >= SIZE*(SIZE-1) && w < SIZE*SIZE)){  // reached the bottom line
+	if((w >= size*(size-1) && w < size*size)){  // reached the bottom line
 	  return true;
 	}
 	Q.push(w);
@@ -237,7 +237,7 @@ bool Hex::leftjudge(int node){
     for( auto w : adjList[v]){
       if( visitorInfo[w] == false && color[w] == color[node]){
 	visitorInfo[w] = true;  //use "VISITING" to identify "candidates" for visits
-	if(w % SIZE == SIZE - 1 ){    // reached the right border
+	if(w % size == size - 1 ){    // reached the right border
 	  return true;
 	}
 	Q.push(w);
@@ -250,15 +250,15 @@ bool Hex::leftjudge(int node){
 bool Hex::wins(){
  
   // if the node is in the upper side, assume white should connect upper side and bottom side
-  for (int i = 0; i != SIZE; ++i){       
-    visitorInfo.assign(SIZE*SIZE, false);
+  for (int i = 0; i != size; ++i){       
+    visitorInfo.assign(size*size, false);
     if(color[i] == Color::White && upjudge(i)){
       return true;	
     }
   }
   // if the node is in the left side
-  for (int i = 0; i <= SIZE*(SIZE - 1); i += SIZE){    
-    visitorInfo.assign(SIZE*SIZE, false);
+  for (int i = 0; i <= size*(size - 1); i += size){    
+    visitorInfo.assign(size*size, false);
     if(color[i] == Color::Black && leftjudge(i)){
       return true;
     }
@@ -273,13 +273,13 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){
   srand(time(NULL));
 
   vector<Color> backup(color);      // store the current board info.
-  vector<int> scores(SIZE*SIZE, 0);
-  vector<int> times(SIZE*SIZE, 0);
+  vector<int> scores(size*size, 0);
+  vector<int> times(size*size, 0);
   
   for(int i = 0; i != difficulty; ++i){
     while(true){    
       // loop until get an legal move
-      move = rand() % (SIZE*SIZE);
+      move = rand() % (size*size);
       if (color[move] == Color::Empty){
 	color[move] = Color::Black;
 	times[move]++;
@@ -298,7 +298,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){
       {  
       while(true)
 	{
-	  simul = rand() % (SIZE*SIZE);
+	  simul = rand() % (size*size);
 	  
 	  if (color[simul] == Color::Empty)
 	    {
@@ -312,7 +312,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){
 	break;
       }
       while(true){
-	simul = rand() % (SIZE*SIZE);
+	simul = rand() % (size*size);
 
 	if (color[simul] == Color::Empty){
 	  color[simul] = Color::Black;
@@ -342,7 +342,7 @@ void Hex::AI(int &opt_x, int &opt_y, int difficulty){
       ++i;
     }
   
-  for (int i = 0; i != SIZE*SIZE; ++i){
+  for (int i = 0; i != size*size; ++i){
     if (times[i] != 0)
       if ( static_cast<double>(scores[i])/static_cast<double>(times[i]) > max){   // search for the optimal move
 	max = static_cast<double>(scores[i])/static_cast<double>(times[i]);
