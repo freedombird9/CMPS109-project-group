@@ -3,6 +3,7 @@
 #include "hex.h"
 #include <string>
 #include <iostream>
+#include <ctime>
 //#define _DEBUG_
 
 using namespace std;
@@ -10,7 +11,7 @@ using namespace std;
 
 int main ( )
 {
-  int x, y; // coodinates for each move
+
   string servername;
   cout << "Please insert the server name" << endl;
   cin >> servername;
@@ -19,7 +20,7 @@ int main ( )
     {
       // Create the socket
       ServerSocket server ( servername.c_str() );
-      Hex game;
+
       while ( true )
 	{
 
@@ -28,11 +29,22 @@ int main ( )
 
 	  try
 	    {
+	      int x, y; // coodinates for each move
+	      string data;
+	      int size, difficulty;
+	      cout << "Now recieving game info from client" << endl;
+	      new_sock >> data;
+	      size = stoi(data);
+
+	      new_sock >> data;
+	      difficulty = stoi(data);
+	      
+	      Hex game(size);
 	      cout << "The game has been set up\n";
 	      game.setBoard();
 	      cout << game << endl;
-	      string data;
-
+	      
+	      srand(time(nullptr));
 	      while(true){
 	      cout << "Now waiting for the user move" << endl;
 
@@ -52,7 +64,7 @@ int main ( )
 	      }	      
 
 	      cout << "Now computer plays..." << endl;
-	      game.AI(x, y, 20000);
+	      game.AI(x, y, difficulty);
 	      game.move(x, y, Color::Black);
 
 	      new_sock << to_string(x);

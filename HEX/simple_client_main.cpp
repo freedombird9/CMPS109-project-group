@@ -26,16 +26,34 @@ int main ( )
       try
 	{
 	  // The game is now set up 
-	    Hex game;
-	    int x, y;
-	    string data;
-	    game.setBoard();
+	   int x, y;
+	   int  size, difficulty;
+	   cout << endl;
+	   cout << "============================= HEX Game ===========================" << endl;
+	   cout << endl;
+	   cout << "Instruction for the difficulty level:" << endl;
+	   cout << "for board size smaller than or equal to 7*7, difficulty = 3000 will make it hard to win the computer" << endl;
+	   cout << "for board size 9*9, you may need difficulty = 6000+ to make your opponent smart enough" << endl;
+	   cout << "for board size 11*11, you'll need at least 12000 as difficulty" << endl;
+	   cout << "Please input the board size (from 4 to 11)" << endl;
+	   cin >> size;
+	   cout << "Please input difficulty" << endl;
+	   cin >> difficulty;
+	   Hex game(size);
+	   
+	   string data;
+	   game.setBoard();
 	    	 
-	    cout << game << endl;
-	    
-	    cout << "Game board setup complete!" << endl;
-	    cout << "Here is the rule:\n";
-	    cout << "Computer will play white from left to right, user will play black up to down.\n";
+	   cout << game << endl;
+	   
+	   cout << "Sending board info to server..." << endl;
+	   client_socket << to_string(size);
+	   sleep(2);
+	   client_socket << to_string(difficulty);
+
+	   cout << "Game board setup complete!" << endl;
+	   cout << "Here is the rule:\n";
+	   cout << "Computer will play white from left to right, user will play black up to down.\n";
 
 	    while(true){
 	    cout << "Now it is your turn, pick up a location (x, y):" << endl;

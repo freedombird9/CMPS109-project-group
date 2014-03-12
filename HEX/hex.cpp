@@ -106,7 +106,7 @@ ostream& operator<<(ostream &out, const Hex& input){
 };
 
 int Hex::coordinToIndex(int x, int y){
-  return ((x-1) * SIZE + y -1);
+  return ((x-1) * size + y -1);
 }
 
 bool Hex::move (int x, int y, Color c){
