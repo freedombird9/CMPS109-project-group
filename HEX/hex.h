@@ -8,7 +8,7 @@
 #include <vector>
 
 using namespace std;
-// const int size = 5;
+// const int input.size = 5;
 
 enum class Color{Black, White, Empty};
 
@@ -17,10 +17,10 @@ class Hex {
 public:
   friend ostream& operator<<(ostream &out, const Hex input){
     int m = 0;
-	out << "board size:" << size << "*" << size << endl;
-	for(int i = 0; i != size; ++i){
+	out << "board input.size:" << input.size << "*" << input.size << endl;
+	for(int i = 0; i != input.size; ++i){
 	  if (i == 0){
-	    for (int j = 0, col = 1; j != size; ++j, ++col){   // first line
+	    for (int j = 0, col = 1; j != input.size; ++j, ++col){   // first line
 	      if (col - 10 < 0){
 		if (j == 0) out << "   ";      // three white-space indent of the whole game board
 		out << " " << col << "/" << " " << "\\" << " ";   // display the column number
@@ -29,26 +29,26 @@ public:
 		if (j == 0) out << "   ";
 		out << col << "/" << " " << "\\" << " ";
 	      }
-	      if ( j % size == size - 1 )  // end of line
+	      if ( j % input.size == input.size - 1 )  // end of line
 		out << endl;
 	    }
-	    for (int j = 0; j != size; ++j){      // second line
+	    for (int j = 0; j != input.size; ++j){      // second line
 	      if (j == 0) out << "   ";      // three white-space indent of the whole game board
 	      out << " " << "/" << "   " << "\\";
-	      if ( j % size == size - 1 )  // end of line
+	      if ( j % input.size == input.size - 1 )  // end of line
 		out << endl;
 	    }
 	  }  // end if (i == 0)
-	  for (int j = 0; j!= size; ++j){   // third line
+	  for (int j = 0; j!= input.size; ++j){   // third line
 	    if (j == 0) out << "   ";     // three white-space indent of the whole game board
 	    out << "|" << "     ";	      
-	    if ( j % size == size - 1 ){  // end of line
+	    if ( j % input.size == input.size - 1 ){  // end of line
 	      out << "|" << endl;
 	      for (int k = 0; k != i; ++k)
 		out << "   ";
 	    }
 	  }
-	  for (int j = 0; j != size; ++j){    // 4th line
+	  for (int j = 0; j != input.size; ++j){    // 4th line
 	    if (j == 0){
 	      if ((i+1) - 10 < 0)        // display the row number
 		out << "  " << i+1;
@@ -69,17 +69,17 @@ public:
 	      break;
 	    }
 	    out << "  ";
-	    if ( j % size == size - 1 ){  // end of line
+	    if ( j % input.size == input.size - 1 ){  // end of line
 	      out << "|" << endl;
 	      for (int k = 0; k != i; ++k)
 		out << "   ";
 	    }
 	  }
-	  for (int j = 0; j != size; ++j){   // 5th line
+	  for (int j = 0; j != input.size; ++j){   // 5th line
 	    if (j == 0) out << "   ";
 	    out << " " << "\\" << "   " << "/";
-	    if ( j % size == size - 1  ){  // end of line
-	      if ( i == size - 1){
+	    if ( j % input.size == input.size - 1  ){  // end of line
+	      if ( i == input.size - 1){
 		out << endl;
 		for (int k = 0; k != i; ++k )
 		  out << "   ";
@@ -91,11 +91,11 @@ public:
 		out << "   ";
 	    }
 	  }
-	  for (int j = 0; j != size; ++j){   // 6th (last) line
+	  for (int j = 0; j != input.size; ++j){   // 6th (last) line
 	    if (j == 0) out << "   ";
 	    out << "  " << "\\" << " " << "/" << " ";
-	    if ( j % size == size - 1  ){  // end of line
-	      if ( i == size - 1)
+	    if ( j % input.size == input.size - 1  ){  // end of line
+	      if ( i == input.size - 1)
 		continue;
 	      out << "  " << "\\";
 	      out << endl;
@@ -108,7 +108,7 @@ public:
 	return out;
   };
   
-  Hex(int size);
+  Hex(int si);
   void setBoard ();
   bool wins ();  
   bool move (int x, int y, Color c);
@@ -118,7 +118,7 @@ private:
   bool leftjudge (int node);
   void indexToCoordin (int index, int &row, int &col);
   int coordinToIndex (int x, int y);
-  const int size;
+  int size;
   vector<bool> visitorInfo;
   vector<Color> color;
   vector<list<int> > adjList;
