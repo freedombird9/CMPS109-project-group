@@ -1,11 +1,10 @@
 // Implementation of the ServerSocket class
-
 #include "ServerSocket.h"
 #include "SocketException.h"
 
-ServerSocket::ServerSocket ( char *hostname )
+ServerSocket::ServerSocket ( const char *hostname )
 {
-  std::cout << "===================== server init =======================" << endl;
+  std::cout << "===================== server init =======================" << "\n";
   
   if( !hostinfo(hostname))
     {
@@ -56,16 +55,15 @@ const ServerSocket& ServerSocket::operator >> ( std::string& s ) const
   return *this;
 }
 
-bool  ServerSocket::hostinfo(char *name) const
+bool  ServerSocket::hostinfo(const char *name) const
 {
   // get DOT name and IP address of the host
-  std::cout << "Now get and show server host info" << endl;
+  std::cout << "Now get and show server host info" << "\n";
   hostent *hp = ::gethostbyname(name); 
 
   if( hp == 0)
     return false;
-
-  std::cout << "   hostname = " << hp->h_name << " IP = " << inet_ntoa(*static_cast<long *>(hp -> h_addr)) << endl;
+  std::cout << "Hostname = " <<  hp->h_name << " IP = " <<  inet_ntoa(*(in_addr *)hp->h_addr) << "\n";
 
   return true;
 }
