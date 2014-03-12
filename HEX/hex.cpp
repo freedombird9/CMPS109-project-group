@@ -223,7 +223,6 @@ bool Hex::wins(){
 void Hex::AI(int &opt_x, int &opt_y, int difficulty){  // AI takes the black side
   int move, simul;
   double max;
-  srand(time(NULL));
 
   vector<Color> backup(color);      // store the current board info.
   vector<int> scores(size*size, 0);
