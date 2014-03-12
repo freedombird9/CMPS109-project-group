@@ -9,17 +9,18 @@
 using namespace std;
 
 
-int main ( )
+int main (int argc, char *argv[] )
 {
 
-  string servername;
-  cout << "Please insert the server name" << endl;
-  cin >> servername;
+  if(argc < 2){
+    cout <<"Run this program like: ./simple_server hostname" << endl;
+    exit(1);
+  }
 
   try
     {
       // Create the socket
-      ServerSocket server ( servername.c_str() );
+      ServerSocket server ( argv[1] );
 
       while ( true )
 	{
@@ -46,7 +47,7 @@ int main ( )
 	      
 	      srand(time(nullptr));
 	      while(true){
-	      cout << "Now waiting for the user move" << endl;
+
 
 	      new_sock >> data;
 	      x = stoi(data);
@@ -54,9 +55,9 @@ int main ( )
 	      new_sock >> data;
 	      y = stoi(data);
 
-	      cout << "what we recieve is "<<  x << y << endl;
+
 	      game.move(x,y,Color::White);
-	      cout << game << endl;
+
 		  
 	      if (game.wins()) {
 		cout << "User (White) wins!" << endl;
@@ -71,7 +72,7 @@ int main ( )
 	      sleep(2);
 	      new_sock << to_string(y);
 	
-	      cout << game << endl;
+
 	      if (game.wins()) {
 		cout << "Computer (Black) wins!" << endl;
 		break;
