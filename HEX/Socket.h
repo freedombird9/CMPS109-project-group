@@ -3,7 +3,6 @@
 #ifndef Socket_class
 #define Socket_class
 
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
