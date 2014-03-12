@@ -1,13 +1,19 @@
-Homework 4
+Homework 6
 Name: Yongfeng Zhang, Jia Xu
 CMPS109 2014 Winter
 
-About the work:
+HOW TO COMPILE:
 
-The objective of this homework is to implement a hex game board, and fill it with moves (half white, half black). Printing the game board is
-pretty straightforward once we are given the size of the board, we don't even need to build any data structure. As usual, we overloaded the
-<< operator to do the printing of the board. There is a little bit of math in calculating how many white spaces should be put in front of each
-line of the game board, because the board is a parallelogram.
+make all ---will generate two executive files: simple_server simple_client
+make clean --- will delete all .o and executive files
+
+HOW TO PLAY:
+In Local machine (Linux, Mac, Windows), open two terminals, then run ./simple_server localhost, then in the output looks for the port info, will find something like "Port = 34779 Succeed!", REMEMBER the port number which will be used in Client side running. Then in another terminal, run ./simple_client, then enter "localhost" as a server name, enter the port number you got from server side. Then there are several instructions print out on the client side screen, now insert the board size, pick up any number from 4 to 11, then insert the difficulty level following the instructions. Wait for a moment, then enter x value then press "enter" in keyboard, then y value. In this case, x value is vertical location on the board, y value is horizontal location on the board. Then wait for the computer response, then enter new move until the game is over. 
+
+In UNIX machine, ssh into the unix.ic.ucsc.edu, then assume everything has already been compiled. enter screen in the terminal to run the screen program, then   insert "./simple_server localhost", after the server info, REMEMBER the port number.Then enter "CTRL-A c" to create a new screen, now enter "./simple_client",then "localhost",  the rest of the game will be the same as the Local machine running. 
+   	
+       
+About the work:
 
 To tell the winner, however, we need to do a Breadth-first search on each of the nodes in the left side and in the upper side. Therefore, we
 need to know the connectivity of the graph. We used an adjacency list to do it. As discussed in class, there are many corner cases concerning

@@ -5,7 +5,6 @@
 #include "hex.h"
 #include <unistd.h>
 
-//#define _DEBUG_
 using namespace std;
 
 int main ( )
@@ -66,11 +65,10 @@ int main ( )
 	    }
 	     	     	     
 	    cout << game << endl;
+
 	    // convert to string then send to the socket
 	    client_socket << to_string(x);
-	    
 	    sleep(2);
-	    
 	    client_socket << to_string(y);
 
 	    if (game.wins()) {
@@ -85,7 +83,6 @@ int main ( )
 	    client_socket >> data;
 	    y = stoi(data);
 
-	    cout << "Now computer moves to x = " << x << " y = " << y << endl;
 	    game.move(x, y, Color::Black);
 	    cout << game << endl;
 	    if (game.wins()) {
@@ -93,55 +90,6 @@ int main ( )
 	      break;
 	    }
 	    }
-            #ifdef _DEBUG_ 	      
-	    while (true){
-
-	      string data;
-	      cout << "Now it is your turn, pick up a location (x, y):" << endl;
-
-	      while (true){
-	  	cin >> x >> y;
-	  	if(game.move(x, y, Color::White))   // white moves first
-	  	  break;
-	  	else cout << "illegal movement, please try agagin" << endl;
-	      }
-	     	     	     
-	      cout << game << endl;
-	      // convert to string then send to the socket
-	      client_socket << to_string(x);
-
-	      sleep(2);
-	      client_socket << to_string(y);
-
-	      if (game.wins()) {
-	  	cout << "Congratulations! You (White) wins!" << endl;
-	  	break;
-	      }
-	      
-	      cout << "Now waiting for the computer response..." << endl;
-
-	      while(data.empty()){
-	  	client_socket >> data;
-	      }
-	      x = stoi(data);
-	     
-	      data.erase(data.begin(), data.end());
-	      while(data.empty()){
-	      client_socket >> data;
-	      }
-	      y = stoi(data);
-
-	      cout << "Now computer moves to x = " << x << " y = " << y << endl;
-	      game.move(x, y, Color::Black);
-	      cout << game << endl;
-	      if (game.wins()) {
-	  	cout << "Ohh... You lose, Computer (Black)  wins!" << endl;
-	  	break;
-	      }
-	    }
-	    #endif
-	    
-
 	}
       catch ( SocketException& ) {}
       
